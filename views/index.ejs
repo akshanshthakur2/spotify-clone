@@ -136,7 +136,7 @@ html::-webkit-scrollbar-thumb {
     <div class="right">
      <div class="music">
       <% currentUser.playlist[0].songs.forEach(function(song){%>
-        <div class="card" onclick="songCardClicked('<%= song.filename %>', '<%= song.title %>', '<%= song.artist %>', '<%= song.poster %>'),getCurrentPlayingSong();">
+        <div class="card" onclick="songCardClicked('<%= song.filename %>', '<%= song.title %>', '<%= song.artist %>', '<%= song.poster %>');">
           <div class="img">
             <img  src="/poster/<%=song.poster%>">
             <button>
