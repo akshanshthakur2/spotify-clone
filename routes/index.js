@@ -18,7 +18,7 @@ passport.use(new localStrategy(users.authenticate()));
 let gfsBucket;
 let gfsBucketPoster;
 
-mongoose.connect('mongodb+srv://aksx3u:kkhTuTKokwcjft3S@spotify-clone.mcd4ygd.mongodb.net/spotify?retryWrites=true&w=majority').then(() => {
+mongoose.connect('mongodb+srv://akshu:akshux3@spoti1.qjhp0lh.mongodb.net/spotiakss?retryWrites=true&w=majority').then(() => {
   console.log('connected to database')
 }).catch(err => {
   console.log(err)
