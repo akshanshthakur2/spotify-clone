@@ -76,6 +76,9 @@ html::-webkit-scrollbar-thumb {
 <body>
   
   <div id="main">
+    <div class="menu">
+      <i id="menubtn" class="ri-menu-fold-fill"></i>
+    </div>
     <div class="left">
       
       <a href="/">
@@ -96,8 +99,8 @@ html::-webkit-scrollbar-thumb {
           <!-- <i class="ri-add-box-fill"></i> -->
         </button>
       <form id="playlist" action="/createplaylist" method="POST">
-        <input id="c-playlist" type="text" name="name" placeholder="Playlist Name" required>
-        <button  id="c-btn" type="submit">Create Playlist</button>
+        <input id="cplaylist" type="text" name="name" placeholder="Playlist Name" required>
+        <button  id="cbtn" type="submit">Create Playlist</button>
       </form>
       <div class="playlists">
         <h2>All Playlists</h2>
@@ -171,6 +174,15 @@ html::-webkit-scrollbar-thumb {
   <script loop src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js" integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <script>
+    document.querySelector("#menubtn").addEventListener("click", function() {
+    var leftElement = document.querySelector(".left");
+    if (leftElement.style.top === "0px" || leftElement.style.top === "") {
+        leftElement.style.top = "-100%";
+    } else {
+        leftElement.style.top = "0";
+    }
+});
+
     
 
 
@@ -201,11 +213,11 @@ html::-webkit-scrollbar-thumb {
     }
 });
 
-document.querySelector("#c-playlist").addEventListener('keyup', function(event) {
+document.querySelector("#cplaylist").addEventListener('keyup', function(event) {
         // Check if the "Enter" key is pressed
         if (event.key === 'Enter') {
             // Simulate a click on the search button
-            document.querySelector("#c-btn").click();
+            document.querySelector("#cbtn").click();
         }
     });
 
