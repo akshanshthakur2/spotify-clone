@@ -10,6 +10,9 @@
 </head>
 <body>
   <div id="main">
+    <div class="menu">
+      <i id="menubtn" class="ri-menu-fold-fill"></i>
+    </div>
     <div class="left">
       <a href="/">
           <button>
@@ -76,6 +79,14 @@
         document.querySelector('audio').setAttribute('src', `/stream/${filename}`)
         document.querySelector('audio').play()
       }
+      document.querySelector("#menubtn").addEventListener("click", function() {
+    var leftElement = document.querySelector(".left");
+    if (leftElement.style.top === "0px" || leftElement.style.top === "") {
+        leftElement.style.top = "-100%";
+    } else {
+        leftElement.style.top = "0";
+    }
+});
     </script>
 </body>
 </html>
