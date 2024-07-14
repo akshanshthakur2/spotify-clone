@@ -5,9 +5,11 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./models/userModel')
-var expressSession = require("express-session")
-const passport = require("passport")
+var usersRouter = require('./routes/users'); // Corrected: usersRouter should refer to the route handler
+
+var expressSession = require("express-session");
+var passport = require("passport");
+var User = require('./models/userModel'); // Require the user model separately
 
 var app = express();
 
@@ -15,18 +17,17 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-
-
 app.use(expressSession({
-  resave:false,
-  saveUninitialized:false,
-  secret:"mst hai"
-}))
+  resave: false,
+  saveUninitialized: false,
+  secret: "mst hai"
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
-passport.serializeUser(usersRouter.serializeUser());
-passport.deserializeUser(usersRouter.deserializeUser());
 
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -38,12 +39,12 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
