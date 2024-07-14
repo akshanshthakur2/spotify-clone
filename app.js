@@ -5,11 +5,11 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users'); // Corrected: usersRouter should refer to the route handler
+var usersRouter = require('./routes/users');
 
 var expressSession = require("express-session");
 var passport = require("passport");
-var User = require('./models/userModel'); // Require the user model separately
+var User = require('./models/userModel');
 
 var app = express();
 
