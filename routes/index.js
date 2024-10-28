@@ -14,11 +14,12 @@ const songModel = require('../models/songModel');
 const userModel = require('../models/userModel');
 const localStrategy = require('passport-local').Strategy; // Import the Strategy class
 passport.use(new localStrategy(users.authenticate()));
+const uri = "mongodb+srv://admin:admin@cluster0.g5aqd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 let gfsBucket;
 let gfsBucketPoster;
 
-mongoose.connect('mongodb+srv://akshu:akshux3@spoti1.qjhp0lh.mongodb.net/spotiakss?retryWrites=true&w=majority').then(() => {
+mongoose.connect(uri).then(() => {
   console.log('connected to database')
 }).catch(err => {
   console.log(err)
@@ -52,7 +53,7 @@ router.get('/', isloggedIn, async function (req, res, next) {
     // Filter playlists to only include the ones owned by the current user
     const playlists = currentUser.playlist.filter(playlist => playlist.owner.equals(currentUser._id));
 
-    res.render('index', { playlists, currentUser });
+    res.render('index', { playlists, currentUser});
   } catch (error) {
     console.error(error);
     res.status(500).send('Error fetching playlists');
@@ -272,25 +273,29 @@ router.get('/playlist',(req,res,next)=>{
   res.render('playlist')
 })
 // Add a route for creating playlists
-router.post('/createplaylist', isloggedIn, async (req, res, next) => {
+router.post('/createplaylist', isloggedIn, async (req, res) => {
   try {
-    const currentUser = await userModel.findById(req.user._id);
+    // Validate the playlist name
+    if (!req.body.name || req.body.name.trim() === "") {
+      return res.status(400).json({ message: 'Playlist name is required.' });
+    }
 
+    const currentUser = await userModel.findById(req.user._id);
     const newPlaylist = await playlistModel.create({
-      name:req.body.name,
+      name: req.body.name,
       owner: req.user._id,
     });
-    
-    console.log(currentUser.playlist)
+
     currentUser.playlist.push(newPlaylist._id);
     await currentUser.save();
 
     res.redirect('/');
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error creating playlist');
+    res.status(500).json({ message: 'Error creating playlist.' });
   }
 });
+
 
 router.get('/playlists', isloggedIn, async (req, res, next) => {
   try {
@@ -304,7 +309,7 @@ router.get('/playlists', isloggedIn, async (req, res, next) => {
         },
       });
 
-    res.render('playlists', { playlists: currentUser.playlist });
+    res.render('playlists', { playlists: currentUser.playlist, songs });
   } catch (error) {
     console.error(error);
     res.status(500).send('Error fetching playlists');

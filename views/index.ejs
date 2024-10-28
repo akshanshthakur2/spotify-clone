@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Spotify Clone</title>
+  <link rel="shortcut icon" href="https://www.freepnglogos.com/uploads/spotify-logo-png/spotify-icon-marilyn-scott-0.png" type="image/x-icon">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <link rel="stylesheet" href="stylesheets/style.css">
 
@@ -138,31 +139,33 @@ html::-webkit-scrollbar-thumb {
     </div>
     <div class="right">
      <div class="music">
-      <% currentUser.playlist[0].songs.forEach(function(song){%>
-        <div class="card" onclick="songCardClicked('<%= song.filename %>', '<%= song.title %>', '<%= song.artist %>', '<%= song.poster %>');">
-          <div class="img">
-            <img  src="/poster/<%=song.poster%>">
-            <button>
-              <svg height="16" role="img" width="16" viewBox="0 0 24 24" aria-hidden="true"><polygon points="21.57 12 5.98 3 5.98 21 21.57 12" fill="currentColor"></polygon></svg>
-            </button>
+      <% if (currentUser && currentUser.playlist && currentUser.playlist[0] && currentUser.playlist[0].songs && currentUser.playlist[0].songs.length > 0) { %>
+        <% currentUser.playlist[0].songs.forEach(function(song) { %>
+          <div class="card" onclick="songCardClicked('<%= song.filename %>', '<%= song.title %>', '<%= song.artist %>', '<%= song.poster %>');">
+            <div class="img">
+              <img src="/poster/<%= song.poster %>">
+              <button>
+                <svg height="16" role="img" width="16" viewBox="0 0 24 24" aria-hidden="true"><polygon points="21.57 12 5.98 3 5.98 21 21.57 12" fill="currentColor"></polygon></svg>
+              </button>
+            </div>
+            <div class="textos">
+              <h2><%= song.title %></h2>
+              <p><%= song.artist %></p>
+            </div>
+            <form action="/like/<%= song._id %>" method="POST">
+              <button style="background-color: transparent; border: none; outline: none; font-size: 25px;" type="submit">
+                <% if (currentUser.likes && currentUser.likes.includes(song._id.toString())) { %>
+                  <i style="color: red;" class="ri-heart-3-fill"></i>
+                <% } else { %>
+                  <i style="color: gray;" class="ri-heart-3-fill"></i>
+                <% } %>
+              </button>
+            </form>
           </div>
-          <div class="textos">
-            <h2><%=song.title%></h2>
-            <p><%=song.artist%></p>
-          </div>
-          <form action="/like/<%= song._id %>" method="POST">
-            <button style="background-color: transparent; border: none; outline: none; font-size: 25px;" type="submit">
-              <% if (currentUser.likes.includes(song._id.toString())) { %>
-                <i style="color: red;" class="ri-heart-3-fill"></i>
-                
-              <% } else { %>
-                <i style="color: gray;" class="ri-heart-3-fill"></i>
-              <% } %>
-            </button>
-          </form>
-        </div>
-      
-      <%}) %>
+        <% }) %>
+      <% } else { %>
+        <p>No songs available in this playlist.</p>
+      <% } %>
     
 
       
